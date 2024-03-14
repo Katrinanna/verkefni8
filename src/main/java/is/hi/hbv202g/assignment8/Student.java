@@ -16,9 +16,4 @@ public class Student extends User {
     public void setFeePaid(boolean feePaid) {
         this.feePaid = feePaid;
     }
-    
-
-    public static void main(String[] args) {
-
-    }
 }

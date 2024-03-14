@@ -15,9 +15,4 @@ public class FacultyMember extends User {
     public void setDepartment(String department) {
         this.department = department;
     }
-    
-
-    public static void main(String[] args) {
-
-    }
 }
