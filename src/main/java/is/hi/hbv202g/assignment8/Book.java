@@ -18,6 +18,14 @@ public class Book {
         this.authors = authors;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public List<Author> getAuthors() {
         return authors;
     }
@@ -29,14 +37,5 @@ public class Book {
     public void addAuthor(Author author) {
         this.authors.add(author);
     }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-
 }
+

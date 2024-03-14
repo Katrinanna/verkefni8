@@ -1,7 +1,6 @@
 package is.hi.hbv202g.assignment8;
 
-abstract class User {
-
+public abstract class User {
     private String name;
 
     public User(String name) {
