@@ -1,88 +1,91 @@
 package is.hi.hbv202g.assignment8;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
-public class LibrarySystem {
+public class LibrarySystem{
+
     private List<Book> books;
     private List<User> users;
     private List<Lending> lendings;
 
     public LibrarySystem() {
-        this.books = new ArrayList<>();
-        this.users = new ArrayList<>();
-        this.lendings = new ArrayList<>();
+        lendings = new java.util.ArrayList<>();
+        books = new java.util.ArrayList<>();
+        users = new java.util.ArrayList<>();
     }
 
-    // Method to add a book with a single author
     public void addBookWithTitleAndNameOfSingleAuthor(String title, String authorName) {
-        Author author = new Author(authorName);
-        Book book = new Book(title, author);
+        Book book = new Book(title, authorName);
         books.add(book);
     }
 
-    // Method to add a book with a list of authors
-    public void addBookWithTitleAndAuthorList(String title, List<Author> authors) {
+    public void addBookWithTitleAndAuthorList(String title, List<Author> authors) throws EmptyAuthorListException {
+        if(authors.isEmpty()) {
+            throw new EmptyAuthorListException("Author list cannot be empty.");
+        }
         Book book = new Book(title, authors);
         books.add(book);
     }
 
-    // Method to add a student user
     public void addStudentUser(String name, boolean feePaid) {
         Student student = new Student(name, feePaid);
         users.add(student);
     }
 
-    // Method to add a faculty member user
     public void addFacultyMemberUser(String name, String department) {
         FacultyMember facultyMember = new FacultyMember(name, department);
         users.add(facultyMember);
     }
 
-    // Method to find a book by title
-    public Book findBookByTitle(String title) {
-        for (Book book : books) {
-            if (book.getTitle().equals(title)) {
-                return book;
+    public Book findBookByTitle(String title) throws UserOrBookDoesNotExistException {
+        for(int i = 0; i < books.size(); i++) {
+            if(books.get(i).getTitle().equals(title)) {
+                return books.get(i);
             }
         }
-        return null;
+        throw new UserOrBookDoesNotExistException("Book does not exist.");
     }
 
-    // Method to find a user by name
-    public User findUserByName(String name) {
-        for (User user : users) {
-            if (user.getName().equals(name)) {
-                return user;
+    public User findUserByName(String name) throws UserOrBookDoesNotExistException{
+        for(int i = 0; i < users.size(); i++) {
+            if(users.get(i).getName().equals(name)) {
+                return users.get(i);
             }
         }
-        return null;
+        throw new UserOrBookDoesNotExistException("User does not exist.");
     }
 
-    // Method to borrow a book
     public void borrowBook(User user, Book book) {
+
         Lending lending = new Lending(book, user);
         lendings.add(lending);
     }
 
-    // Method to extend a lending
-    public void extendLending(FacultyMember facultyMember, Book book, LocalDate newDueDate) {
+    public void extendLending(FacultyMember facultyMember, Book book, LocalDate newDueDate) throws UserOrBookDoesNotExistException {
         for (Lending lending : lendings) {
             if (lending.getBook().equals(book) && lending.getUser().equals(facultyMember)) {
                 lending.setDueDate(newDueDate);
+                return;
+            }
+        }
+
+        throw new UserOrBookDoesNotExistException("No lending found for the specified book and faculty member.");
+    }
+
+    public void returnBook(User user, Book book) throws UserOrBookDoesNotExistException {
+        Lending matchingLending = null;
+        for (Lending lending : lendings) {
+            if (lending.getBook().equals(book) && lending.getUser().equals(user)) {
+                matchingLending = lending;
                 break;
             }
         }
-    }
 
-    // Method to return a book
-    public void returnBook(User user, Book book) {
-        for (Lending lending : lendings) {
-            if (lending.getBook().equals(book) && lending.getUser().equals(user)) {
-                lendings.remove(lending);
-                break;
-            }
+        if (matchingLending != null) {
+            lendings.remove(matchingLending);
+        } else {
+            throw new UserOrBookDoesNotExistException("Book has not been rented or was not borrowed by this user.");
         }
     }
 }

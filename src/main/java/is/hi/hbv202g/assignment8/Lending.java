@@ -3,22 +3,15 @@ package is.hi.hbv202g.assignment8;
 import java.time.LocalDate;
 
 public class Lending {
+
+    private LocalDate duDate;
     private Book book;
     private User user;
-    private LocalDate dueDate;
 
     public Lending(Book book, User user) {
+        this.duDate = LocalDate.now().plusDays(30);
         this.book = book;
         this.user = user;
-        this.dueDate = LocalDate.now().plusDays(30);
-    }
-
-    public Book getBook() {
-        return book;
-    }
-
-    public void setBook(Book book) {
-        this.book = book;
     }
 
     public User getUser() {
@@ -30,10 +23,19 @@ public class Lending {
     }
 
     public LocalDate getDueDate() {
-        return dueDate;
+        return duDate;
     }
 
-    public void setDueDate(LocalDate dueDate) {
-        this.dueDate = dueDate;
+    public void setDueDate(LocalDate duDate) {
+        this.duDate = duDate;
     }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
 }
